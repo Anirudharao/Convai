@@ -1,0 +1,50 @@
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+  apiKey: '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',
+});
+
+const openai = new OpenAIApi(configuration);
+
+const prompts = [
+    // "Teach me about machine learning in 100 words",
+    "Teach me about Statistics",
+    "Teach me about Fintech in 100 words",
+]
+
+const explanation = [];
+const verifyPrompt = [];
+let ans;
+
+const runPrompt = async () => {
+    // const prompt = prompts[1];
+    for(let i=0; i<1; i++){
+        const response = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: prompts[i],
+            max_tokens: 2048,
+            temperature: 1,
+        });
+        explanation[i] = response.data.choices[0].text;
+        console.log(response.data.choices[0].text);
+
+        ans = "Statistics is a field of mathematics that allows us to analyze and interpret data. It involves collecting data, analyzing it, and drawing conclusions. Statistical analysis usually involves the application of probability theory and statistical models, such as the normal distribution. Statistical analysis can be used to answer questions, make predictions, and reveal patterns in data. It can also be used to test hypotheses, measure the impact of interventions, and compare groups of subjects";
+        // ans = explanation[i];
+        // var temp = "Based on the explanation: '" + explanation[i] + "' is the answer given below correct?: Answer only in yes or no\n" + ans;
+        // var temp = "For the topic: '" + prompts[i] + "' is the answer given below correct?: Answer only in yes or no\n" + ans;
+        var temp = "What percentage of the explanation: '" + explanation[i] + "' matches with the answer given below?:\n" + ans;
+        verifyPrompt[i] = temp;
+        console.log(verifyPrompt[i]);
+
+        const response2 = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: verifyPrompt[i],
+            max_tokens: 2048,
+            temperature: 1,
+        });
+        console.log("Came out of response2");
+        console.log(response2.data.choices[0].text);
+    }
+};
+
+runPrompt();
