@@ -1,241 +1,135 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-// import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css'
-// import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from "@chatscope/chat-ui-kit-react"
-// // import { async } from 'node-couchdb/dist/node-couchdb'
-
-// const API_KEY = "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";
-
-// const systemMessage = {
-//   "role": "system",
-//   "content": "Explain all concepts like I am 20 years old"
-// }
-
-// function App() {
-//   const [isTyping, setIsTyping] = useState(false);
-//   const [messages, setMessages] = useState([
-//     {
-//       message: "Hello, I am ChatGPT",
-//       sender: "ChatGPT",
-      
-//     }
-//   ])
-
-//   const handleSend = async (message) => {
-//     const newMessage = {
-//       message,
-//       sender: "user",
-//       direction: "outgoing"
-//     }
-
-//     const newMessages = [...messages, newMessage]; //old + new Messages
-
-//     // Update message State
-//     setMessages(newMessages);
-    
-//     // Set typing to true
-//     setIsTyping(true);
-
-//     // Process message to ChatGPT (send it over and see the response)
-//     await processMessageToChatGPT(newMessages);
-//   } 
-
-
-//   async function processMessageToChatGPT(chatMessages){
-//     // chatMessages {sender: "user" or "ChatGPT", message: "Message Content here"}
-//     // apiMessages {role: "user" or "assistant", content: "Message Content here"}
-    
-//     let apiMessages = chatMessages.map((messageObject) => {
-//       let role = "";
-//       if(messageObject.sender === "ChatGPT"){
-//         role = "assistant";
-//       } else{
-//         role = "user";
-//       }
-//       return {role: role, content: messageObject.message}
-//     });
-
-    
-
-//     const apiRequestBody = {
-//       "model": "gpt-3.5-turbo",
-//       "messages": [
-//         systemMessage,
-//         ...apiMessages //[message1, message2, ..]
-//       ]
-//     }
-
-//     await fetch("https://api.openai.com/v1/chat/completions", 
-//     {
-//       method: "POST",
-//       headers: {
-//         "Authorization": "Bearer " + API_KEY,
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify(apiRequestBody)
-//     }).then((data) => {
-//       console.log(data);
-//       console.log(data.choices[0].message.content);
-//       setMessages(
-//         [...chatMessages, {
-//           message: data.choices[0].message.content,
-//           sender: "ChatGPT"
-//         }]
-//       );
-//       setIsTyping(false);
-//     });
-
-//   }
-
-//   return (
-//     <div className="App">
-//       <div style={{position: "relative", height: "700px", width: "1000px"}}>
-//         {/* <h1>Hello</h1> */}
-//         <MainContainer>
-//           <ChatContainer>
-//             <MessageList
-//               typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is generating response" /> : null}
-//             >
-//               {messages.map((message, i) => {
-//                 return <Message key={i} model={message} />
-//               })}
-//             </MessageList>
-//             <MessageInput placeholder='Type message here' onSend={handleSend}></MessageInput>
-//           </ChatContainer>
-//         </MainContainer>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default App
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import { useState } from 'react'
 import './App.css'
-import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
-import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
+import Learning from './components/Learning'
+import Qna from './components/Qna'
 
-const API_KEY = "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";
-// "Explain things like you would to a 10 year old learning how to code."
-const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
-  "role": "system", "content": "Explain things like you're talking to a software professional with 2 years of experience."
-}
+const topics = [
+  "Do you want me to give me an intro to ML?",
+  "Do you want to know the steps in Data Training?",
+  "Do you want to learn about Data Collection?",
+  "Do you want to learn about data preprocessing?",
+  "Do you want to know what data training is?",
+  "Do you want to learn about Data Evaluation?"
+]
 
 function App() {
-  const [messages, setMessages] = useState([
-    {
-      message: "Hello, I'm ChatGPT! Ask me anything!",
-      sentTime: "just now",
-      sender: "ChatGPT"
-    }
-  ]);
-  const [isTyping, setIsTyping] = useState(false);
+  
 
-  const handleSend = async (message) => {
-    const newMessage = {
-      message,
-      direction: 'outgoing',
-      sender: "user"
-    };
-
-    const newMessages = [...messages, newMessage];
-    
-    setMessages(newMessages);
-
-    // Initial system message to determine ChatGPT functionality
-    // How it responds, how it talks, etc.
-    setIsTyping(true);
-    await processMessageToChatGPT(newMessages);
-  };
-
-  async function processMessageToChatGPT(chatMessages) { // messages is an array of messages
-    // Format messages for chatGPT API
-    // API is expecting objects in format of { role: "user" or "assistant", "content": "message here"}
-    // So we need to reformat
-
-    let apiMessages = chatMessages.map((messageObject) => {
-      let role = "";
-      if (messageObject.sender === "ChatGPT") {
-        role = "assistant";
-      } else {
-        role = "user";
-      }
-      return { role: role, content: messageObject.message}
-    });
+const [showComponent1, setShowComponent1] = useState(false);
+const [showComponent2, setShowComponent2] = useState(false);
+const [showComponent3, setShowComponent3] = useState(false);
+const [showComponent4, setShowComponent4] = useState(false);
+const [showComponent5, setShowComponent5] = useState(false);
+const [showComponent6, setShowComponent6] = useState(false);
 
 
-    // Get the request body set up with the model we plan to use
-    // and the messages which we formatted above. We add a system message in the front to'
-    // determine how we want chatGPT to act. 
-    const apiRequestBody = {
-      "model": "gpt-3.5-turbo",
-      "messages": [
-        systemMessage,  // The system message DEFINES the logic of our chatGPT
-        ...apiMessages // The messages from our chat with ChatGPT
-      ]
-    }
+let arr = [];
+for(let i=0; i<6; i+=1){
+    arr.push(false);
+}
+let i = 0;
 
-    await fetch("https://api.openai.com/v1/chat/completions", 
-    {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer " + API_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(apiRequestBody)
-    }).then((data) => {
-      return data.json();
-    }).then((data) => {
-      console.log(data);
-      setMessages([...chatMessages, {
-        message: data.choices[0].message.content,
-        sender: "ChatGPT"
-      }]);
-      setIsTyping(false);
-    });
-  }
+let b1=false, b2=false, b3=false, b4=false, b5=false, b6=false;
+
+
+
+let isCorrect = false;
+
+function setIsCorrect(n) {
+  isCorrect = Boolean(n);
+  return 1;
+}
+
+const handleClick1 = () => {
+  console.log("Clicking");
+
+  setShowComponent1(true);
+  setIsCorrect(0);
+}
+
+const handleClick2 = () => {
+  console.log("Clicking");
+
+  setShowComponent2(true);
+  setIsCorrect(0);
+
+}
+
+const handleClick3 = () => {
+  console.log("Clicking");
+
+  setShowComponent3(true);
+  setIsCorrect(0);
+}
+
+const handleClick4 = () => {
+  console.log("Clicking");
+
+  setShowComponent4(true);
+  setIsCorrect(0);
+}
+
+const handleClick5 = () => {
+  console.log("Clicking");
+
+  setShowComponent5(true);
+  setIsCorrect(0);
+}
+
+const handleClick6 = () => {
+  console.log("Clicking");
+
+  setShowComponent6(true);
+  setIsCorrect(0);
+}
+
+
 
   return (
-    <div className="App">
-      <div style={{ position:"relative", height: "600px", width: "700px"  }}>
-        <MainContainer>
-          <ChatContainer>       
-            <MessageList 
-              scrollBehavior="smooth" 
-              typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is generating a response" /> : null}
-            >
-              {messages.map((message, i) => {
-                console.log(message)
-                return <Message key={i} model={message} />
-              })}
-            </MessageList>
-            <MessageInput placeholder="Type message here" onSend={handleSend} />        
-          </ChatContainer>
-        </MainContainer>
-      </div>
-    </div>
+    <>
+
+       <Learning topic = {topics[0]} />
+        {b1 = true}
+       {b1 && <button onClick={handleClick1}>Module 1 Test</button>}
+
+       {showComponent1 && setIsCorrect(1) && <Qna topic="What is ML?" />  }
+       {isCorrect && <Learning topic = {topics[1]} />}
+       {isCorrect = false}
+       {b2 = true}
+       
+       { b2 && <button onClick={handleClick2}>Module 2 Test</button>}
+       {showComponent2 && setIsCorrect(1) && <Qna topic="What are the steps in data training?" />}
+
+       
+       {isCorrect && <Learning topic = {topics[2]} /> }
+       {isCorrect = false}
+       {b3 = true}
+       {b3 && <button onClick={handleClick3}>Module 3 Test</button>}
+       {showComponent3 && setIsCorrect(1) && <Qna topic="What is data collection?" />}
+
+       {isCorrect && <Learning topic = {topics[3]} />}
+       {isCorrect = false}
+       {b4 = true}
+       {b4 && <button onClick={handleClick4}>Module 4 Test</button>}
+       {showComponent4 && setIsCorrect(1) && <Qna topic="What is data preprocessing?" />}
+
+       {isCorrect && <Learning topic = {topics[4]} />}
+       {isCorrect = false}
+       {b5 = true}
+       {b5 && <button onClick={handleClick5}>Module 5 Test</button>}
+       {showComponent5 && setIsCorrect(1) && <Qna topic="What is data training?" />}
+
+       {isCorrect && <Learning topic = {topics[5]} />}
+       {isCorrect = false}
+       {b6 = true}
+       {b6 && <button onClick={handleClick6}>Module 6 Test</button>}
+       {showComponent6 && setIsCorrect(1) && <Qna topic="What is data evaluation?" />}
+
+    </>
+    
+   
   )
 }
 
-export default App
+export default App;
