@@ -2,7 +2,7 @@
 Mini project for On-Campus Internship
 
 
-```
+
 
 Development
 
@@ -38,6 +38,8 @@ In this project, you can run the following scripts:
 Insert API keys at the marked location
 
 
-## Working
+Working
 
-By default when the page is loaded, a prompt is loaded. The user can interact with the prompt and gain the necessary information. When the user has a sufficient understanding, they can take the test. There are 6 modules, and accordingly 6 buttons for taking tests. If the user feels like they know sufficiently about a topic, they can directly go to the respective test pages. The answers of the users shall be confirmed by ChatGPT and the corresponding feedback shall be given.
+By default when the page is loaded, a prompt is loaded. The user can interact with the prompt and gain the necessary information. When the user has a sufficient 
+understanding, they can take the test. There are 6 modules, and accordingly 6 buttons for taking tests. If the user feels like they know sufficiently about a topic, 
+they can directly go to the respective test pages. The answers of the users shall be confirmed by ChatGPT and the corresponding feedback shall be given.
