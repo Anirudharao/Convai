@@ -4,7 +4,7 @@ Mini project for On-Campus Internship
 
 ```
 
-## Development
+Development
 
 Install dependencies:
 
